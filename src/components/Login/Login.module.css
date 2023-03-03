@@ -1,0 +1,66 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.control label {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.control input {
+  padding: 0.4rem;
+  border: 1.5px solid #999;
+  border-radius: 4px;
+  outline: none;
+  font-family: inherit;
+  font-size: 1.8rem;
+
+  transition: all 0.1s;
+}
+
+.control input:focus {
+  border: 1.5px solid #000;
+  background-color: rgba(190, 109, 228, 0.2);
+}
+
+.control.invalid input {
+  border-color: tomato;
+  background-color: rgba(255, 99, 71, 0.25);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  border: none;
+  font-size: 1.8rem;
+  border-radius: 44px;
+  padding: 1.6rem 6.4rem;
+  color: #454545;
+  background: #999;
+
+  transition: all 1s;
+}
+
+.btn.active {
+  cursor: pointer;
+  background: #9417ad;
+  color: #fff;
+
+  transition: all 0.3s;
+}
+
+.btn.active:hover {
+  background: #701283;
+}

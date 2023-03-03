@@ -1,0 +1,13 @@
+.card {
+  width: 90rem;
+  min-height: 20rem;
+  margin: 0 auto;
+  padding: 3.2rem;
+  background-color: #fff;
+  border-radius: 11px;
+  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.15);
+}
+
+.test {
+  background-color: red !important;
+}
