@@ -3,77 +3,104 @@ import Card from '../UI/Card';
 import styles from './Login.module.css';
 
 const Login = props => {
-  // Input states
-  const [enteredMail, setEnteredMail] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
-
-  // Validation States
   // Form Validation
   const [formIsValid, setFormIsValid] = useState(false);
 
-  // Input Validation
-  const [passwordIsValid, setPasswordIsValid] = useState(true);
-  const [emailIsValid, setEmailIsValid] = useState(true);
+  // useReducer \\
+  const emailReducer = (state, action) => {
+    if (action.type === 'USER_INPUT') {
+      return { value: action.val, isValid: action.val.includes('@') };
+    }
 
-  // useReducer
-  const emailReducer = () => {};
-  const [emailState, dispatchEmail] = useReducer(emailReducer);
+    if (action.type === 'INPUT_BLUR') {
+      return { value: state.value, isValid: state.value.includes('@') };
+    }
 
-  // Storing input datas with handlers attached to inputs
+    return { value: '', isValid: false };
+  };
+
+  const passwordReducer = (state, action) => {
+    if (action.type === 'USER_INPUT') {
+      return { value: action.val, isValid: action.val.trim().length > 6 };
+    }
+
+    if (action.type === 'USER_BLUR') {
+      return { value: state.value, isValid: state.value.trim().length > 6 };
+    }
+
+    return { value: '', isValid: false };
+  };
+
+  // Initial function and initial state
+  const [emailState, dispatchEmail] = useReducer(emailReducer, {
+    value: '',
+    isValid: true,
+  });
+
+  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
+    value: '',
+    isValid: true,
+  });
+
   const enteredMailHandler = e => {
-    setEnteredMail(e.target.value);
+    dispatchEmail({ type: 'USER_INPUT', val: e.target.value });
   };
 
   const enteredPasswordHandler = e => {
-    setEnteredPassword(e.target.value);
+    dispatchPassword({ type: 'USER_INPUT', val: e.target.value });
   };
 
-  // useEffect in order to check overall form validity
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = emailState;
+
+  console.log(emailIsValid, passwordIsValid);
+
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(
-        enteredMail.includes('@') && enteredPassword.trim().length > 6
-      );
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 500);
 
-    // Cleanup return function
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, [enteredMail, enteredPassword]);
+    return () => clearTimeout(identifier);
+  }, [emailIsValid, passwordIsValid]);
 
-  // Checking input validities after blur (unfocus)
-  const validateEmailHandler = () => setEmailIsValid(enteredMail.includes('@'));
+  const validateEmailHandler = () => dispatchEmail({ type: 'INPUT_BLUR' });
 
+  // Activate the action blur, when this function gets executed
   const validatePasswordHandler = () =>
-    setPasswordIsValid(enteredPassword.trim().length > 6);
+    dispatchPassword({ type: 'INPUT_BLUR' });
 
   const submitHandler = e => {
     e.preventDefault();
-    formIsValid && props.onLogin(enteredMail, enteredPassword);
+    formIsValid && props.onLogin(emailState.value, passwordState.value);
   };
 
   return (
     <Card>
       <form onSubmit={submitHandler} className={styles.form}>
-        <div className={`${styles.control} ${!emailIsValid && styles.invalid}`}>
+        <div
+          className={`${styles.control} ${
+            !emailState.isValid && styles.invalid
+          }`}
+        >
           <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
-            value={enteredMail}
+            value={emailState.value}
             onChange={enteredMailHandler}
             onBlur={validateEmailHandler}
           />
         </div>
         <div
-          className={`${styles.control} ${!passwordIsValid && styles.invalid}`}
+          className={`${styles.control} ${
+            !passwordState.isValid && styles.invalid
+          }`}
         >
           <label htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
-            value={enteredPassword}
+            value={passwordState.value}
             onChange={enteredPasswordHandler}
             onBlur={validatePasswordHandler}
           />
