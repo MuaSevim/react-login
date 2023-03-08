@@ -1,9 +1,17 @@
-import styles from "./Navigation.module.css";
+import { useContext } from 'react';
+import AuthContext from '../../store/auth-context';
+import styles from './Navigation.module.css';
 
-const Navigation = (props) => {
+const Navigation = props => {
+  const { onLogout } = useContext(AuthContext);
   return (
     <nav className={styles.nav}>
       <ul>
+        <li>
+          <a href="/" className={styles.link}>
+            Home
+          </a>
+        </li>
         <li>
           <a href="/" className={styles.link}>
             Users
@@ -17,7 +25,7 @@ const Navigation = (props) => {
         <li>
           <button
             className={`${styles.link} ${styles.logout}`}
-            onClick={props.onLogout}
+            onClick={onLogout}
           >
             Logout
           </button>

@@ -1,8 +1,12 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useContext } from 'react';
 import Card from '../UI/Card';
+import Button from '../UI/Button';
 import styles from './Login.module.css';
+import AuthContext from '../../store/auth-context';
 
 const Login = props => {
+  const authCtx = useContext(AuthContext);
+
   const [formIsValid, setFormIsValid] = useState(false);
 
   const emailReducer = (state, action) => {
@@ -46,15 +50,14 @@ const Login = props => {
   const enteredPasswordHandler = e => {
     dispatchPassword({ type: 'USER_INPUT', val: e.target.value });
   };
+
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
   useEffect(() => {
-    console.log('useEffect: ', emailIsValid, passwordIsValid);
     const identifier = setTimeout(() => {
       setFormIsValid(emailIsValid && passwordIsValid);
-      console.log('Timeout :', emailIsValid, passwordIsValid);
-    }, 1500);
+    }, 500);
 
     return () => clearTimeout(identifier);
   }, [emailIsValid, passwordIsValid]);
@@ -66,7 +69,7 @@ const Login = props => {
 
   const submitHandler = e => {
     e.preventDefault();
-    formIsValid && props.onLogin(emailState.value, passwordState.value);
+    formIsValid && authCtx.onLogin(emailState.value, passwordState.value);
   };
 
   return (
@@ -102,12 +105,13 @@ const Login = props => {
         </div>
 
         <div className={styles['form-actions']}>
-          <button
-            className={`${styles.btn} ${formIsValid && styles.active}`}
+          <Button
+            className={`${!formIsValid && styles.inactive}`}
             disabled={!formIsValid}
+            type="submit"
           >
             Login
-          </button>
+          </Button>
         </div>
       </form>
     </Card>

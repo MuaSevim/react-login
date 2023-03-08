@@ -1,11 +1,11 @@
 .header {
   background: #741188;
   padding: 2.4rem 4.8rem;
-  
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+
   margin-bottom: 6.4rem;
 }
 

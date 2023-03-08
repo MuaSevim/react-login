@@ -42,25 +42,7 @@
   justify-content: center;
 }
 
-.btn {
-  border: none;
-  font-size: 1.8rem;
-  border-radius: 44px;
-  padding: 1.6rem 6.4rem;
-  color: #454545;
+.inactive {
   background: #999;
-
-  transition: all 1s;
-}
-
-.btn.active {
-  cursor: pointer;
-  background: #9417ad;
-  color: #fff;
-
-  transition: all 0.3s;
-}
-
-.btn.active:hover {
-  background: #701283;
+  color: #454545;
 }
