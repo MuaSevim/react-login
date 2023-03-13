@@ -26,7 +26,7 @@ export const AuthContextProvider = props => {
   };
 
   const ctxValues = {
-    isLoggedIn: isLoggedIn,
+    isLoggedIn,
     onLogin: loginHandler,
     onLogout: logoutHandler,
   };

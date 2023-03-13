@@ -6,24 +6,28 @@ import styles from './Login.module.css';
 import Input from '../UI/Input';
 
 const emailReducer = (state, action) => {
+  const checkEmail = email => email.includes('@');
+
   if (action.type === 'USER_INPUT') {
-    return { value: action.val, isValid: action.val.includes('@') };
+    return { value: action.val, isValid: checkEmail(action.val) };
   }
 
   if (action.type === 'INPUT_BLUR') {
-    return { value: state.value, isValid: state.value.includes('@') };
+    return { value: state.value, isValid: checkEmail(state.value) };
   }
 
   return { value: '', isValid: false };
 };
 
 const passwordReducer = (state, action) => {
+  const checkPassword = password => password.trim().length > 6;
+
   if (action.type === 'USER_INPUT') {
-    return { value: action.val, isValid: action.val.trim().length > 6 };
+    return { value: action.val, isValid: checkPassword(action.val) };
   }
 
   if (action.type === 'INPUT_BLUR') {
-    return { value: state.value, isValid: state.value.trim().length > 6 };
+    return { value: state.value, isValid: checkPassword(state.value) };
   }
 
   return { value: '', isValid: false };
@@ -34,6 +38,7 @@ const Login = () => {
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const btnRef = useRef();
 
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -73,6 +78,7 @@ const Login = () => {
 
   const submitHandler = e => {
     e.preventDefault();
+    btnRef.current.style.background = 'seagreen';
     if (formIsValid) authCtx.onLogin(emailState.value, passwordState.value);
     else if (!emailIsValid) emailInputRef.current.activate();
     else passwordInputRef.current.activate();
@@ -105,6 +111,7 @@ const Login = () => {
 
         <div className={styles['form-actions']}>
           <Button type="submit">Login</Button>
+          <p ref={btnRef}>'This is only a test'</p>
         </div>
       </form>
     </Card>
